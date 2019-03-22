@@ -1,0 +1,27 @@
+{
+  "name": "hue-fireplace",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p ./",
+    "lint": "tslint *.ts -t verbose || true",
+    "pretest": "tsc -p ./",
+    "test": "mocha --recursive src/test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^11.11.5",
+    "@types/request-promise-native": "^1.0.15",
+    "node-dtls-client": "^0.5.6",
+    "prettier": "^1.16.4",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7",
+    "source-map-support": "^0.5.11",
+    "tslint": "^5.14.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-config-standard": "^8.0.1",
+    "typescript": "^3.3.4000"
+  }
+}
