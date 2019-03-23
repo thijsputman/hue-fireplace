@@ -1,4 +1,4 @@
-import { config} from "./config"
+import { config } from "./config";
 import { dtls } from "node-dtls-client";
 import * as request from "request-promise-native";
 
@@ -62,19 +62,36 @@ function main() {
     }
 
     (async () => {
-        while (true) {
-            await delay(100);
+        let y: number = 0;
+        let colour: Buffer = Buffer.from([]);
+        let frameCounter: number = 0;
 
-            // prettier-ignore
-            const colour = Buffer.from([
-                (Math.random() * 0xff) as number,
-                (Math.random() * 0xff) as number,
-                (Math.random() * 0xff) as number,
-                (Math.random() * 0xff) as number,
-                (Math.random() * 0xff) as number,
-                (Math.random() * 0xff) as number,])
+        while (true) {
+
+            // Message-rate 50 Hz
+
+            await delay(20);
+
+            // Effect-rate 12.5 Hz
+
+            if (frameCounter % 4 === 0) {
+                y = 0.5 * Math.sin(frameCounter / 50) + 0.5;
+
+                // prettier-ignore
+                colour = Buffer.from([
+                    (y * 0xff) as number,
+                    (y * 0xff) as number,
+                    (0.65 * y * 0xff) as number,
+                    (0.65 * y * 0xff) as number,
+                    (0.65 * y * 0xff) as number,
+                    (0.65 * y * 0xff) as number,])
+
+                console.log(Date.now(), colour);
+            }
 
             socket.send(Buffer.concat([message, colour]));
+
+            frameCounter++;
         }
     })();
 }
