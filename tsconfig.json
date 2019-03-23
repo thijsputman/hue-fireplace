@@ -5,6 +5,8 @@
 		"lib": ["es6", "dom"],
 		"experimentalDecorators": true,
 		"sourceMap": true,
-		"outDir": "src"
+		"outDir": "src",
+		"noUnusedParameters": true,
+		"noUnusedLocals": true
 	}
 }
