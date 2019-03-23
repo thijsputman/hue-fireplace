@@ -62,12 +62,10 @@ function main() {
     }
 
     (async () => {
-        let y: number = 0;
         let colour: Buffer = Buffer.from([]);
         let frameCounter: number = 0;
 
         while (true) {
-
             // Message-rate 50 Hz
 
             await delay(20);
@@ -75,16 +73,21 @@ function main() {
             // Effect-rate 12.5 Hz
 
             if (frameCounter % 4 === 0) {
-                y = 0.5 * Math.sin(frameCounter / 50) + 0.5;
+                const y = 0.5 * Math.sin(frameCounter / 80) + 0.5;
+
+                // 16-bit values; appear not to work :?
+                // const x = new Buffer((new Uint16Array([y * 0xffff])).buffer);
+                // colour = Buffer.concat([x,x,x]);
 
                 // prettier-ignore
                 colour = Buffer.from([
                     (y * 0xff) as number,
+                    0x00,
                     (y * 0xff) as number,
-                    (0.65 * y * 0xff) as number,
-                    (0.65 * y * 0xff) as number,
-                    (0.65 * y * 0xff) as number,
-                    (0.65 * y * 0xff) as number,])
+                    0x00,
+                    (y * 0xff) as number,
+                    0x00
+                ])
 
                 console.log(Date.now(), colour);
             }
