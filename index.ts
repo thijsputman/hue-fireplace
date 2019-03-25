@@ -5,23 +5,35 @@ import * as request from "request-promise-native";
 let socket: dtls.Socket;
 
 const hueHub = config.bridge;
-const hueClientKey = new Buffer(config.clientKey, "hex");
+const hueClientKey = Buffer.from(config.clientKey, "hex");
 const hueUserName = config.userName;
 
-(async () => {
+async function setStream(state: boolean) {
     const woei = await request.put(
         "http://" + hueHub + "/api/" + hueUserName + "/groups/6",
         {
             json: true,
             body: {
                 stream: {
-                    active: true,
+                    active: state,
                 },
             },
         }
     );
 
     console.log(woei);
+}
+
+(async () => {
+    await setStream(true);
+
+    process.on("SIGINT", () => {
+        (async () => {
+            await setStream(false);
+
+            process.exit();
+        })();
+    });
 
     const options: dtls.Options = {
         type: "udp4",
@@ -73,10 +85,10 @@ function main() {
             // Effect-rate 12.5 Hz
 
             if (frameCounter % 4 === 0) {
-                const y = 0.5 * Math.sin(frameCounter / 80) + 0.5;
+                const y = 0.5 * Math.sin(frameCounter / 20) + 0.5;
 
                 // 16-bit values; appear not to work :?
-                // const x = new Buffer((new Uint16Array([y * 0xffff])).buffer);
+                // const x = Buffer.from((new Uint16Array([y * 0xffff])).buffer);
                 // colour = Buffer.concat([x,x,x]);
 
                 // prettier-ignore
