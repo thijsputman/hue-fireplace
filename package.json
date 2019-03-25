@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc -p ./",
-    "lint": "tslint *.ts -t verbose || true",
+    "lint": "tslint *.ts --project tsconfig.json -t verbose || true",
     "pretest": "tsc -p ./",
     "test": "mocha --recursive src/test"
   },

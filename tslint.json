@@ -16,7 +16,7 @@
             https://github.com/Microsoft/vscode-tslint/issues/333
         */
         "await-promise": false,
-        "deprecation": false,
+        "deprecation": true,
         "no-floating-promises": false,
         "no-unnecessary-qualifier": false,
         "no-unnecessary-type-assertion": false,
