@@ -1,6 +1,7 @@
 import { config } from "./config";
 import { dtls } from "node-dtls-client";
 import * as request from "request-promise-native";
+import { Support} from "./lib/Support";
 
 let socket: dtls.Socket;
 
@@ -69,10 +70,6 @@ function main() {
         ]),
     ]);
 
-    function delay(ms: number) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
     (async () => {
         let colour: Buffer = Buffer.from([]);
         let frameCounter: number = 0;
@@ -80,7 +77,7 @@ function main() {
         while (true) {
             // Message-rate 50 Hz
 
-            await delay(20);
+            await Support.delay(20);
 
             // Effect-rate 12.5 Hz
 
