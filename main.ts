@@ -1,20 +1,25 @@
-// import { config } from "./config";
+import { config } from "./config";
 import { Support } from "./lib/Support";
-// import { HueSocket, IHueSocketOptions } from "./lib/HueSocket";
+import { HueSocket, IHueSocketOptions } from "./lib/HueSocket";
 import { ISocket } from "./lib/ISocket";
 import { IColour } from "./lib/IColour";
 import { TestSocket } from "./lib/TestSocket";
 
-// const hueOptions: IHueSocketOptions = {
-//     host: config.bridge,
-//     clientKey: config.clientKey,
-//     userName: config.userName,
-//     light: 15,
-//     lightGroup: 6
-// }
+let socket: ISocket;
 
-// const socket = new HueSocket(hueOptions);
-const socket = new TestSocket();
+if (process.argv[2] !== "local") {
+    const hueOptions: IHueSocketOptions = {
+        host: config.bridge,
+        clientKey: config.clientKey,
+        userName: config.userName,
+        light: 15,
+        lightGroup: 6,
+    };
+
+    socket = new HueSocket(hueOptions);
+} else {
+    socket = new TestSocket();
+}
 
 socket.onclientConnect(main);
 
@@ -22,7 +27,12 @@ socket.connect();
 
 process.on("SIGINT", () => {
     (async () => {
-        await socket.close();
+        try{
+            await socket.close();
+            console.log("closed");}
+        catch{
+            console.log("close failed");
+        }
 
         process.exit();
     })();
