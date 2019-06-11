@@ -10,17 +10,7 @@
         "ordered-imports": false,
         "member-ordering": false,
         "no-console": false,
-        "object-literal-sort-keys": false,
-        /*
-        Following rules are not available in VSCode; see
-            https://github.com/Microsoft/vscode-tslint/issues/333
-        */
-        "await-promise": false,
-        "deprecation": true,
-        "no-floating-promises": false,
-        "no-unnecessary-qualifier": false,
-        "no-unnecessary-type-assertion": false,
-        "strict-type-predicates": false
+        "object-literal-sort-keys": false
     },
     "rulesDirectory": []
 }
