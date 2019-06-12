@@ -26,21 +26,19 @@ socket.onclientConnect(main);
 socket.connect();
 
 process.on("SIGINT", () => {
-    (async () => {
-        try{
-            await socket.close();
-            console.log("closed");}
-        catch{
-            console.log("close failed");
-        }
+    try {
+        socket.close();
+        console.log("closed");
+    } catch {
+        console.log("close failed");
+    }
 
-        process.exit();
-    })();
+    process.exit();
 });
 
 function main(mySocket: ISocket) {
-    (async () => {
-        let colour: IColour;
+    return (async () => {
+        let colour: IColour = { red: 0, green: 0, blue: 0 };
         let frameCounter: number = 0;
 
         while (true) {

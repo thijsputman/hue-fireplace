@@ -4,18 +4,16 @@ import { Support } from "./lib/Support";
 const wsServer = new Server({ port: 8099 });
 
 process.on("SIGINT", () => {
-    (async () => {
-        await wsServer.close();
-        console.log("closed");
+    wsServer.close();
+    console.log("closed");
 
-        process.exit();
-    })();
+    process.exit();
 });
 
 wsServer.on("connection", function connection(ws) {
     console.log("connected!");
 
-    (async () => {
+    return (async () => {
         while (true) {
             // Message-rate 12.5 Hz
 

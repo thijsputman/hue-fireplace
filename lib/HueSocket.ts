@@ -35,8 +35,8 @@ export class HueSocket implements ISocket {
     }
 
     public connect() {
-        (async () => {
-            await this._setStream(true);
+        return (async () => {
+            this._setStream(true);
 
             this.socket = dtls
                 .createSocket(this.dtlsOptions)
@@ -53,11 +53,11 @@ export class HueSocket implements ISocket {
     }
 
     public async close() {
-        await this._setStream(false);
+        this._setStream(false);
     }
 
-    private async _setStream(state: boolean) {
-        const woei = await request.put(
+    private _setStream(state: boolean) {
+        const woei = request.put(
             "http://" +
                 this.options.host +
                 "/api/" +
@@ -93,11 +93,11 @@ export class HueSocket implements ISocket {
 
         // prettier-ignore
         const colourBuffer: Buffer = Buffer.from([
-            (colour.red * 0xff) as number,
+            colour.red * 0xff,
             0x00,
-            (colour.green * 0xff) as number,
+            colour.green * 0xff,
             0x00,
-            (colour.blue * 0xff) as number,
+            colour.blue * 0xff,
             0x00
         ])
 
