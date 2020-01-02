@@ -1,6 +1,6 @@
 export const config = {
-    devicetype: "",
-    bridge: "",
-    userName: "",
-    clientKey: "",
+  devicetype: "",
+  bridge: "",
+  userName: "",
+  clientKey: ""
 };

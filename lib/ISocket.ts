@@ -1,12 +1,12 @@
 import { IColour } from "./IColour";
 
 export interface ISocket {
-    connect(): void;
+  connect(): void;
 
-    // TODO: This should be async...
-    close(): void;
+  // TODO: This should be async...
+  close(): void;
 
-    sendColour(colour: IColour): void;
+  sendColour(colour: IColour): void;
 
-    onclientConnect(mainLoop: (socket: ISocket) => void): void;
+  onclientConnect(mainLoop: (socket: ISocket) => void): void;
 }
