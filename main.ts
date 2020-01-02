@@ -12,7 +12,7 @@ if (process.argv[2] !== "local") {
     host: config.bridge,
     clientKey: config.clientKey,
     userName: config.userName,
-    light: 15,
+    lights: [15, 40],
     lightGroup: 6
   };
 

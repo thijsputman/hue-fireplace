@@ -7,7 +7,7 @@ export interface IHueSocketOptions {
   host: string;
   userName: string;
   clientKey: string;
-  light: number;
+  lights: number[];
   lightGroup: number;
 }
 
@@ -88,8 +88,7 @@ export class HueSocket implements ISocket {
         0x00,       // sequence (ignored)
         0x00, 0x00, // reserved
         0x00,       // colour mode RGB
-        0x00,       // reserved
-        0x00, 0x00, this.options.light // Light Id(s)
+        0x00        // reserved
       ])
     ]);
 
@@ -100,9 +99,17 @@ export class HueSocket implements ISocket {
       colour.blue,  0x00
     ]);
 
-    console.log(Date.now(), colourBuffer);
+    const lightsBuffer: Buffer[] = [];
 
-    this.socket.send(Buffer.concat([message, colourBuffer]));
+    for (const lightNumber of this.options.lights) {
+      lightsBuffer.push(
+        Buffer.concat([Buffer.from([0x00, 0x00, lightNumber]), colourBuffer])
+      );
+    }
+
+    console.log(Date.now(), Buffer.concat(lightsBuffer));
+
+    this.socket.send(Buffer.concat([message, Buffer.concat(lightsBuffer)]));
   }
 
   public onclientConnect(mainLoop: (socket: ISocket) => void) {
