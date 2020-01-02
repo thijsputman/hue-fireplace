@@ -38,7 +38,9 @@ process.on("SIGINT", () => {
 
 function main(mySocket: ISocket) {
   return (async () => {
+    const baseColour: IColour = { red: 254, green: 158, blue: 82 };
     let colour: IColour = { red: 0, green: 0, blue: 0 };
+    let wind: number = 0;
     let frameCounter: number = 0;
 
     while (true) {
@@ -46,15 +48,23 @@ function main(mySocket: ISocket) {
 
       await Support.delay(20);
 
+      // Full sinus-wave
+
+      if (frameCounter % 120 === 0) {
+        wind = Math.random();
+      }
+
       // Effect-rate 12.5 Hz
 
       if (frameCounter % 4 === 0) {
-        const y = 0.5 * Math.sin(frameCounter / 40) + 0.5;
+        const sin = ((Math.PI * 2) / 120) * frameCounter;
+        const amplitude = 0.5 * Math.sin(sin) + 0.5;
+        const y = 0.36 + amplitude * 0.1 * (0.75 * wind + 0.25);
 
         colour = {
-          red: Math.round(y * 255),
-          green: Math.round(y * 255),
-          blue: Math.round(y * 255)
+          red: Math.round(y * baseColour.red),
+          green: Math.round(y * baseColour.green),
+          blue: Math.round(y * baseColour.blue)
         };
       }
 
