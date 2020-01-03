@@ -59,7 +59,8 @@ function main(mySocket: ISocket) {
       if (frameCounter % 4 === 0) {
         const sin = ((Math.PI * 2) / 120) * frameCounter;
         const amplitude = 0.5 * Math.sin(sin) + 0.5;
-        const y = 0.36 + amplitude * 0.1 * (0.75 * wind + 0.25);
+        const jitter = 0.65 + Math.random() * 0.35;
+        const y = 0.28 + amplitude * jitter * 0.16 * (0.75 * wind + 0.25);
 
         colour = {
           red: Math.round(y * baseColour.red),
