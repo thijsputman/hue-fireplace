@@ -107,7 +107,7 @@ export class HueSocket implements ISocket {
       );
     }
 
-    console.log(Date.now(), Buffer.concat(lightsBuffer));
+    process.stdout.write(".");
 
     this.socket.send(Buffer.concat([message, Buffer.concat(lightsBuffer)]));
   }

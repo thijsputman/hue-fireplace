@@ -1,3 +1,5 @@
+import * as chalk from "chalk";
+
 import { config } from "./config";
 import { Support } from "./lib/Support";
 import { HueSocket, IHueSocketOptions } from "./lib/HueSocket";
@@ -67,6 +69,13 @@ function main(mySocket: ISocket) {
           green: Math.round(y * baseColour.green),
           blue: Math.round(y * baseColour.blue)
         };
+
+        console.log(
+          frameCounter,
+          chalk
+            .rgb(colour.red, colour.green, colour.blue)
+            .inverse(JSON.stringify(colour))
+        );
       }
 
       try {
