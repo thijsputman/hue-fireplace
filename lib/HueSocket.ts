@@ -1,10 +1,12 @@
+import request from "request-promise-native";
+
 import { ISocket } from "./ISocket";
 import { dtls } from "node-dtls-client";
-import * as request from "request-promise-native";
 import { IColour } from "./IColour";
+import { Support } from "./Support";
 
 export interface IHueSocketOptions {
-  host: string;
+  bridge: string;
   userName: string;
   clientKey: string;
   lights: number[];
@@ -22,7 +24,7 @@ export class HueSocket implements ISocket {
 
     this.dtlsOptions = {
       type: "udp4",
-      address: this.options.host,
+      address: this.options.bridge,
       port: 2100,
       psk: {},
       timeout: 1000
@@ -35,6 +37,8 @@ export class HueSocket implements ISocket {
   public connect() {
     return (async () => {
       await this._setStream(true);
+
+      await Support.delay(500);
 
       this.socket = dtls
         .createSocket(this.dtlsOptions)
@@ -59,7 +63,7 @@ export class HueSocket implements ISocket {
     // sonarts does not seem to understand request-promise-native
     const woei = await request.put(
       "http://" +
-        this.options.host +
+        this.options.bridge +
         "/api/" +
         this.options.userName +
         "/groups/" +

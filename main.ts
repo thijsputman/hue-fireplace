@@ -1,31 +1,34 @@
-import * as chalk from "chalk";
+import chalk from "chalk";
 
-import { config } from "./config";
 import { Support } from "./lib/Support";
 import { HueSocket, IHueSocketOptions } from "./lib/HueSocket";
 import { ISocket } from "./lib/ISocket";
 import { IColour } from "./lib/IColour";
-import { TestSocket } from "./lib/TestSocket";
+import { readFileSync } from "fs";
+import { resolve } from "path";
 
 let socket: ISocket;
 
-if (process.argv[2] !== "local") {
-  const hueOptions: IHueSocketOptions = {
-    host: config.bridge,
-    clientKey: config.clientKey,
-    userName: config.userName,
-    lights: [15, 40],
-    lightGroup: 6
-  };
+async function init() {
+  if (process.argv[2] !== "local") {
+    const dotFireplace = JSON.parse(
+      readFileSync(resolve(process.cwd(), "./.fireplace.json")).toString()
+    );
 
-  socket = new HueSocket(hueOptions);
-} else {
-  socket = new TestSocket();
+    const hueOptions: IHueSocketOptions = dotFireplace;
+
+    socket = new HueSocket(hueOptions);
+  } else {
+    const TestSocket = (await import("./lib/TestSocket")).TestSocket;
+    socket = new TestSocket();
+  }
+
+  socket.onclientConnect(main);
+
+  socket.connect();
 }
 
-socket.onclientConnect(main);
-
-socket.connect();
+init();
 
 process.on("SIGINT", () => {
   try {
