@@ -1,2 +1,6 @@
 node_modules/
-src/
+/dist/lib/
+/dist/main.js
+/dist/package-lock.json
+/src/
+.fireplace.json
