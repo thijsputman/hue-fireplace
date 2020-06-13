@@ -1,11 +1,19 @@
-import chalk from "chalk";
-
 import { Support } from "./lib/Support";
 import { HueSocket, IHueSocketOptions } from "./lib/HueSocket";
 import { ISocket } from "./lib/ISocket";
 import { IColour } from "./lib/IColour";
 import { readFileSync } from "fs";
 import { resolve } from "path";
+
+const debug = process.env.DEBUG ?? false;
+let logFrame: (...args: any[]) => void;
+
+if (debug) {
+  (async () => {
+    const { HueConsole } = await import("./lib/HueConsole");
+    logFrame = HueConsole.logFrame;
+  })();
+}
 
 let socket: ISocket;
 
@@ -73,12 +81,9 @@ function main(mySocket: ISocket) {
           blue: Math.round(y * baseColour.blue)
         };
 
-        console.log(
-          frameCounter,
-          chalk
-            .rgb(colour.red, colour.green, colour.blue)
-            .inverse(JSON.stringify(colour))
-        );
+        if (logFrame) {
+          logFrame(frameCounter, colour);
+        }
       }
 
       try {
