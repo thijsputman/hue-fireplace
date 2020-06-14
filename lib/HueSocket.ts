@@ -32,6 +32,9 @@ export class HueSocket implements ISocket {
 
     const clientKey: Buffer = Buffer.from(this.options.clientKey, "hex");
     this.dtlsOptions.psk[this.options.userName] = clientKey.toString("binary");
+    (async () => {
+      this.dtlsOptions.address = await Support.dnsLookup(this.options.bridge);
+    })();
   }
 
   public connect() {
