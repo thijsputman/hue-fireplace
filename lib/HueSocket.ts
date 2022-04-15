@@ -1,9 +1,9 @@
-import request from "request-promise-native";
+import fetch from "node-fetch";
 
-import { ISocket } from "./ISocket";
+import { ISocket } from "./ISocket.js";
 import { dtls } from "node-dtls-client";
-import { IColour } from "./IColour";
-import { Support } from "./Support";
+import { IColour } from "./IColour.js";
+import { Support } from "./Support.js";
 
 export interface IHueSocketOptions {
   bridge: string;
@@ -62,9 +62,7 @@ export class HueSocket implements ISocket {
   }
 
   private async _setStream(state: boolean) {
-    // tslint:disable:no-invalid-await
-    // sonarts does not seem to understand request-promise-native
-    const woei = await request.put(
+    const response = await fetch(
       "http://" +
         this.options.bridge +
         "/api/" +
@@ -72,17 +70,11 @@ export class HueSocket implements ISocket {
         "/groups/" +
         this.options.lightGroup,
       {
-        json: true,
-        body: {
-          stream: {
-            active: state
-          }
-        }
+        method: "PUT",
+        body: JSON.stringify({ stream: { active: state } })
       }
     );
-    // tslint:enable:no-invalid-await
-
-    console.log(woei);
+    console.log(await response.text());
   }
 
   public sendColour(colour: IColour) {

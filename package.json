@@ -2,7 +2,11 @@
   "name": "hue-fireplace",
   "version": "0.1.0",
   "description": "",
-  "main": "main.ts",
+  "exports": "./main.ts",
+  "type": "module",
+  "engines": {
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+  },
   "repository": {
     "type": "github",
     "url": "https://github.com/thijsputman/hue-fireplace"
@@ -12,32 +16,28 @@
     "start:local": "opener ./test/ws/client.html && node src/main.js local",
     "build": "tsc -p ./",
     "build:dist": "tsc -p ./dist/tsconfig.json ",
-    "lint": "tslint *.ts --project tsconfig.json -t verbose || true",
-    "pretest": "tsc -p ./",
-    "test": "mocha --recursive src/test"
+    "lint": "eslint \"**/*.ts\" || true"
   },
   "author": "Thijs Putman <thijs@sgraastra.net>",
   "license": "BSD-3-Clause",
   "dependencies": {
     "@types/node": "^11.15.3",
-    "@types/request-promise-native": "^1.0.17",
     "@types/ws": "^6.0.4",
     "chalk": "^3.0.0",
-    "eslint": "^6.1.0",
+    "node-dtls-client": "^1.0.1",
+    "node-fetch": "^3.2.3",
+    "opener": "^1.5.1",
+    "ws": "^6.2.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.19.0",
+    "@typescript-eslint/parser": "^5.19.0",
+    "eslint": "^8.13.0",
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-prettier": "^3.1.2",
-    "eslint-plugin-sonarjs": "^0.4.0",
-    "node-dtls-client": "^0.5.6",
-    "opener": "^1.5.1",
+    "eslint-plugin-sonarjs": "^0.13.0",
     "prettier": "^1.16.4",
-    "request": "^2.88.0",
-    "request-promise-native": "^1.0.7",
     "source-map-support": "^0.5.11",
-    "tslint": "^5.14.0",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-plugin-prettier": "^2.0.1",
-    "tslint-sonarts": "^1.9.0",
-    "typescript": "^3.3.4000",
-    "ws": "^6.2.1"
+    "typescript": "^4.6.3"
   }
 }

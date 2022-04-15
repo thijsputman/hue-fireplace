@@ -1,5 +1,5 @@
-import { ISocket } from "./ISocket";
-import { IColour } from "./IColour";
+import { ISocket } from "./ISocket.js";
+import { IColour } from "./IColour.js";
 import { Server } from "ws";
 
 export class TestSocket implements ISocket {

@@ -1,4 +1,4 @@
-import { IColour } from "./IColour";
+import { IColour } from "./IColour.js";
 
 export interface ISocket {
   connect(): void;

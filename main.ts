@@ -1,7 +1,7 @@
-import { Support } from "./lib/Support";
-import { HueSocket, IHueSocketOptions } from "./lib/HueSocket";
-import { ISocket } from "./lib/ISocket";
-import { IColour } from "./lib/IColour";
+import { Support } from "./lib/Support.js";
+import { HueSocket, IHueSocketOptions } from "./lib/HueSocket.js";
+import { ISocket } from "./lib/ISocket.js";
+import { IColour } from "./lib/IColour.js";
 import { readFileSync } from "fs";
 import { resolve } from "path";
 
@@ -10,7 +10,7 @@ let logFrame: (...args: any[]) => void;
 
 if (debug) {
   (async () => {
-    const { HueConsole } = await import("./lib/HueConsole");
+    const { HueConsole } = await import("./lib/HueConsole.js");
     logFrame = HueConsole.logFrame;
   })();
 }
@@ -27,7 +27,7 @@ async function init() {
 
     socket = new HueSocket(hueOptions);
   } else {
-    const TestSocket = (await import("./lib/TestSocket")).TestSocket;
+    const TestSocket = (await import("./lib/TestSocket.js")).TestSocket;
     socket = new TestSocket();
   }
 

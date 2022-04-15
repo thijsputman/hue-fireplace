@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { IColour } from "./IColour";
+import { IColour } from "./IColour.js";
 
 export abstract class HueConsole {
   public static logFrame(frameCounter: number, colour: IColour) {
