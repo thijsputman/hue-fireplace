@@ -17,7 +17,7 @@ FROM node:16-alpine3.15
 
 SHELL ["/bin/ash", "-euo", "pipefail", "-c"]
 
-COPY /docker/justcontainer.asc /tmp/justcontainer.asc
+COPY /docker/just-containers.asc /tmp/just-containers.asc
 
 RUN apk add --no-cache --virtual /tmp/.gpg gnupg~=2.2 && \
     # Set correct architecture for s6-overlay
@@ -33,7 +33,7 @@ RUN apk add --no-cache --virtual /tmp/.gpg gnupg~=2.2 && \
     wget -nv -O /tmp/s6-installer.sig \
       "https://github.com/just-containers/s6-overlay/releases/download/v2.1.0.2/s6-overlay-$arch-installer.sig" && \
     # Import just-containers' public key; use gpgv to validate installer
-    gpg --no-default-keyring --keyring /tmp/s6-installer.gpg --import /tmp/justcontainer.asc && \
+    gpg --no-default-keyring --keyring /tmp/s6-installer.gpg --import /tmp/just-containers.asc && \
     gpgv --keyring /tmp/s6-installer.gpg /tmp/s6-installer.sig /tmp/s6-installer && \
     # Execute the installer
     chmod +x /tmp/s6-installer && /tmp/s6-installer / && \
