@@ -6,6 +6,6 @@
   "compilerOptions": {
     "sourceMap": false,
     "removeComments": true,
-    "outDir": "./"
+    "outDir": "./src"
   }
 }

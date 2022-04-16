@@ -1,0 +1,7 @@
+#!/usr/bin/with-contenv ash
+# shellcheck shell=ash
+
+set -eo pipefail
+
+cd /hue-fireplace
+exec node ./main.js

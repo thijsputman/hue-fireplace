@@ -1,6 +1,6 @@
 node_modules/
-/dist/lib/
-/dist/main.js
-/dist/package-lock.json
-/src/
+/dist/src/**
+!/dist/src/.gitkeep
+/src/**
+!/src/.gitkeep
 .fireplace.json
