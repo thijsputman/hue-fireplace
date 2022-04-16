@@ -21,19 +21,14 @@ export class TestSocket implements ISocket {
   }
 
   public sendColour(colour: IColour) {
-    const data = [colour.red, colour.green, colour.blue];
-
-    try {
-      this.ws.send(Buffer.from(data));
-      console.log(Date.now(), data);
-    } catch (error) {
-      if (this.ws.readyState >= 2) {
-        console.log("closed");
-        throw error;
-      } else {
-        console.log(error);
-      }
+    if (this.ws.readyState >= 2) {
+      throw new Error("WebSocket closed!");
     }
+
+    const data = [colour.red, colour.green, colour.blue];
+    // XXX Use callback to retrieve details of (potential) error
+    this.ws.send(Buffer.from(data));
+    console.log(Date.now(), data);
   }
 
   public onClientConnect(mainLoop: (socket: ISocket) => void) {

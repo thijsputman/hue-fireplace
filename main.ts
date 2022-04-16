@@ -4,6 +4,7 @@ import { ISocket } from "./lib/ISocket.js";
 import { IColour } from "./lib/IColour.js";
 import { readFileSync } from "fs";
 import { resolve } from "path";
+import http from "http";
 
 const debug = process.env.DEBUG ?? false;
 let logFrame: (...args: any[]) => void;
@@ -38,29 +39,95 @@ async function init() {
 
 init();
 
-process.on("SIGINT", () => {
-  try {
-    socket.close();
-    console.log("closed");
-  } catch {
-    console.log("close failed");
-  }
-
-  process.exit();
-});
-
 function main(mySocket: ISocket) {
+  let command = "";
+  const httpServer = http.createServer();
+
+  const commandPromise = (): Promise<void> => {
+    return new Promise<void>(resolve => {
+      httpServer.once(
+        "request",
+        (request: http.IncomingMessage, response: http.ServerResponse) => {
+          // XXX: This is only required for the local debug/WebSocket path
+          if (request.method === "OPTIONS") {
+            response.setHeader("Access-Control-Allow-Origin", "localhost");
+            response.writeHead(200);
+            response.end();
+            resolve();
+          }
+          const url = new URL(
+            request.url ?? "",
+            `http://${request.headers.host}`
+          );
+          if (url.pathname.toLowerCase().startsWith("/hue-fireplace/")) {
+            command = url.pathname.split("/")[2] ?? "";
+          }
+          response.writeHead(200, { "Content-Type": "text/plain" });
+          response.end("Okay!");
+          resolve();
+        }
+      );
+    });
+  };
+  let resolveOnCommand = commandPromise();
+
+  httpServer.listen(9000);
+
+  let exitMain = false;
+  const resolveOnSIGTERM = new Promise<void>(resolve => {
+    process.once("SIGTERM", () => {
+      console.warn("Interrupt received; attempting to start graceful exit");
+      exitMain = true;
+      resolve();
+    });
+  });
+
+  // Turn SIGINT (Ctrl+C) into SIGTERM
+  process.once("SIGINT", () => {
+    process.emit("SIGTERM");
+  });
+
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   return (async () => {
     const baseColour: IColour = { red: 254, green: 158, blue: 82 };
     let colour: IColour = { red: 0, green: 0, blue: 0 };
     let wind = 0;
     let frameCounter = 0;
+    let paused = false;
 
     // eslint-disable-next-line no-constant-condition
     while (true) {
-      // Message-rate 50 Hz
+      await Promise.race([
+        // Message-rate 50 Hz (20 ms)
+        Support.delay(paused ? 1000 : 20),
+        resolveOnCommand,
+        resolveOnSIGTERM
+      ]);
 
-      await Support.delay(20);
+      if (command.length > 0) {
+        resolveOnCommand = commandPromise();
+        const receivedCommand = command.toLowerCase();
+        command = "";
+
+        switch (receivedCommand) {
+          case "stop":
+            paused = true;
+            break;
+          case "start":
+            paused = false;
+            break;
+          case "abort":
+            exitMain = true;
+            break;
+        }
+      }
+
+      if (paused) {
+        continue;
+      }
+      if (exitMain) {
+        break;
+      }
 
       // Full sinus-wave
 
@@ -96,5 +163,13 @@ function main(mySocket: ISocket) {
 
       frameCounter++;
     }
+    try {
+      socket.close();
+      console.log("closed");
+    } catch {
+      console.warn("close failed");
+    }
+
+    process.exit();
   })();
 }

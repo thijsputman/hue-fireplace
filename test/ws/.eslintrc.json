@@ -3,11 +3,11 @@
     "es6": true,
     "browser": true
   },
-  "plugins": ["sonarjs"],
+  "plugins": ["prettier", "sonarjs", "eslint-plugin-html"],
   "extends": [
     "eslint:recommended",
-    "plugin:sonarjs/recommended",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:sonarjs/recommended"
   ],
   "globals": {
     "Atomics": "readonly",

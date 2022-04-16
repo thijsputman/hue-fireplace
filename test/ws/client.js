@@ -6,6 +6,26 @@ document.body.addEventListener("keydown", e => {
   }
 });
 
+document.getElementById("controls").addEventListener("click", e => {
+  if (e.target.tagName == "BUTTON") {
+    let request;
+    switch (e.target.id) {
+      case "stop":
+        request = new Request("http://localhost:9000/hue-fireplace/stop");
+        break;
+      case "start":
+        request = new Request("http://localhost:9000/hue-fireplace/start");
+        break;
+      case "abort":
+        exampleSocket.close();
+        break;
+    }
+    if (request) {
+      fetch(request);
+    }
+  }
+});
+
 var reader = new FileReader();
 reader.addEventListener("loadend", function() {
   const colours = new Uint8Array(reader.result);
