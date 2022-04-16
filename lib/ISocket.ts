@@ -8,5 +8,5 @@ export interface ISocket {
 
   sendColour(colour: IColour): void;
 
-  onclientConnect(mainLoop: (socket: ISocket) => void): void;
+  onClientConnect(mainLoop: (socket: ISocket) => void): void;
 }

@@ -111,7 +111,7 @@ export class HueSocket implements ISocket {
     this.socket.send(Buffer.concat([message, Buffer.concat(lightsBuffer)]));
   }
 
-  public onclientConnect(mainLoop: (socket: ISocket) => void) {
+  public onClientConnect(mainLoop: (socket: ISocket) => void) {
     this.mainLoop = mainLoop;
   }
 }

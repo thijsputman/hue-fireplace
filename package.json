@@ -21,15 +21,15 @@
   "author": "Thijs Putman <thijs@sgraastra.net>",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "@types/node": "^11.15.3",
-    "@types/ws": "^6.0.4",
-    "chalk": "^3.0.0",
+    "chalk": "^5.0.1",
     "node-dtls-client": "^1.0.1",
     "node-fetch": "^3.2.3",
-    "opener": "^1.5.1",
-    "ws": "^6.2.1"
+    "opener": "^1.5.2",
+    "ws": "^8.5.0"
   },
   "devDependencies": {
+    "@types/node": "^17.0.24",
+    "@types/ws": "^8.5.0",
     "@typescript-eslint/eslint-plugin": "^5.19.0",
     "@typescript-eslint/parser": "^5.19.0",
     "eslint": "^8.13.0",

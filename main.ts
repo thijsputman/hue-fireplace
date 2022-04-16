@@ -31,7 +31,7 @@ async function init() {
     socket = new TestSocket();
   }
 
-  socket.onclientConnect(main);
+  socket.onClientConnect(main);
 
   socket.connect();
 }
@@ -53,9 +53,10 @@ function main(mySocket: ISocket) {
   return (async () => {
     const baseColour: IColour = { red: 254, green: 158, blue: 82 };
     let colour: IColour = { red: 0, green: 0, blue: 0 };
-    let wind: number = 0;
-    let frameCounter: number = 0;
+    let wind = 0;
+    let frameCounter = 0;
 
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       // Message-rate 50 Hz
 

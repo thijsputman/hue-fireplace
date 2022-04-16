@@ -1,14 +1,14 @@
 import { ISocket } from "./ISocket.js";
 import { IColour } from "./IColour.js";
-import { Server } from "ws";
+import WebSocket, { WebSocketServer } from "ws";
 
 export class TestSocket implements ISocket {
   private mainLoop: (socket: ISocket) => void;
-  private wsServer: Server;
-  private ws: any;
+  private wsServer: WebSocketServer;
+  private ws: WebSocket;
 
   public connect() {
-    this.wsServer = new Server({ port: 8099 });
+    this.wsServer = new WebSocketServer({ port: 8099 });
 
     this.wsServer.on("connection", ws => {
       this.ws = ws;
@@ -36,7 +36,7 @@ export class TestSocket implements ISocket {
     }
   }
 
-  public onclientConnect(mainLoop: (socket: ISocket) => void) {
+  public onClientConnect(mainLoop: (socket: ISocket) => void) {
     this.mainLoop = mainLoop;
   }
 }

@@ -8,6 +8,7 @@
   "plugins": ["@typescript-eslint", "prettier", "sonarjs"],
   "parser": "@typescript-eslint/parser",
   "rules": {
-    "prettier/prettier": "warn"
+    "prettier/prettier": "warn",
+    "@typescript-eslint/no-explicit-any": ["warn", { "ignoreRestArgs": true }]
   }
 }
